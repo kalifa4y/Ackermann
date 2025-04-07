@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Ajouter un Avocat | Ackermann{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header py-3">
+          <h2 class="h4 mb-0 fw-bold text-white">Ajouter un Nouvel Avocat</h2>
+        </div>
+        <div class="card-body p-4">
+          {# Affichage des messages (succès, erreur) #}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" novalidate class="needs-validation">
+            {% csrf_token %}
+
+            {# Affichage des erreurs générales du formulaire #}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}<p class="mb-0">{{ error }}</p>{% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+              </div>
+            {% endif %}
+
+            {# Informations personnelles #}
+            <div class="mb-4">
+              <h5 class="section-title text-primary mb-3 pb-2">Informations personnelles</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="{{ form.first_name.id_for_label }}" class="form-label fw-medium">{{ form.first_name.label }} <span class="text-danger">*</span></label>
+                  {{ form.first_name }}
+                  {% if form.first_name.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.first_name.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label for="{{ form.last_name.id_for_label }}" class="form-label fw-medium">{{ form.last_name.label }} <span class="text-danger">*</span></label>
+                  {{ form.last_name }}
+                  {% if form.last_name.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.last_name.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            {# Coordonnées #}
+            <div class="mb-4">
+              <h5 class="section-title text-primary mb-3 pb-2">Coordonnées</h5>
+              <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label fw-medium">{{ form.email.label }} <span class="text-danger">*</span></label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+                <div class="form-text">Cette adresse sera utilisée pour la connexion et les communications.</div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="{{ form.phone_number.id_for_label }}" class="form-label fw-medium">{{ form.phone_number.label }}</label>
+                  {{ form.phone_number }}
+                  {% if form.phone_number.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.phone_number.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label for="{{ form.specialization.id_for_label }}" class="form-label fw-medium">{{ form.specialization.label }}</label>
+                  {{ form.specialization }}
+                  {% if form.specialization.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.specialization.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            {# Sécurité #}
+            <div class="mb-4">
+              <h5 class="section-title text-primary mb-3 pb-2">Sécurité</h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="{{ form.password.id_for_label }}" class="form-label fw-medium">{{ form.password.label }} <span class="text-danger">*</span></label>
+                  {{ form.password }}
+                  {% if form.password.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.password.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                  <div class="form-text">Utilisez au moins 8 caractères avec des lettres et des chiffres.</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="{{ form.password_confirm.id_for_label }}" class="form-label fw-medium">{{ form.password_confirm.label }} <span class="text-danger">*</span></label>
+                  {{ form.password_confirm }}
+                  {% if form.password_confirm.errors %}
+                    <div class="invalid-feedback d-block">{% for error in form.password_confirm.errors %}{{ error }}{% endfor %}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+              <a href="{% url 'lawyer_list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Retour à la liste
+              </a>
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-person-plus-fill me-1"></i> Ajouter l'Avocat
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Styles spécifiques au formulaire */
+  .form-control, .form-select {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.6rem 0.75rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: var(--ackermann-yellow);
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+  }
+  
+  /* Assurer que les champs de formulaire ont le style Bootstrap */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  input[type="tel"], 
+  select {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  input[type="text"]:focus, 
+  input[type="email"]:focus, 
+  input[type="password"]:focus, 
+  input[type="tel"]:focus, 
+  select:focus {
+    border-color: var(--ackermann-yellow);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--ackermann-yellow);
+  }
+</style>
+{% endblock %}

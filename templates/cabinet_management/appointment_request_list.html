@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Demandes de Rendez-vous | Ackermann{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="section-title mb-0">Demandes de Rendez-vous en Attente</h2>
+      <p class="text-muted mt-2">Gérez les demandes de rendez-vous des clients</p>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      {% if pending_appointments %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-header">
+              <tr>
+                <th scope="col" class="py-3">Date et Heure</th>
+                <th scope="col" class="py-3">Client</th>
+                <th scope="col" class="py-3">Avocat Demandé</th>
+                <th scope="col" class="py-3">Notes du Client</th>
+                <th scope="col" class="py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for app in pending_appointments %}
+                <tr>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-calendar-event me-2 text-primary"></i>
+                      <div>
+                        <div class="fw-medium">{{ app.appointment_datetime|date:"d/m/Y" }}</div>
+                        <div class="small text-muted">{{ app.appointment_datetime|date:"H:i" }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-person me-2 text-primary"></i>
+                      {{ app.client.user.get_full_name|default:app.client.user.username }}
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-briefcase me-2 text-primary"></i>
+                      {{ app.lawyer.user.get_full_name|default:app.lawyer.user.username|default:"Non Assigné" }}
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    {% if app.notes %}
+                      <span class="d-inline-block text-truncate" style="max-width: 200px;" title="{{ app.notes }}">
+                        {{ app.notes }}
+                      </span>
+                    {% else %}
+                      <span class="text-muted">-</span>
+                    {% endif %}
+                  </td>
+                  <td class="py-3 text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                      <form action="{% url 'confirm_appointment' app.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-sm px-3">
+                          <i class="bi bi-check-circle me-1"></i> Confirmer
+                        </button>
+                      </form>
+                      <form action="{% url 'cancel_appointment' app.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm px-3">
+                          <i class="bi bi-x-circle me-1"></i> Annuler
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-5">
+          <i class="bi bi-calendar-check fs-1 text-muted mb-3"></i>
+          <h5>Aucune demande en attente</h5>
+          <p class="text-muted">Toutes les demandes de rendez-vous ont été traitées.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-header {
+    background-color: var(--ackermann-cream);
+    border-bottom: 2px solid var(--ackermann-yellow);
+  }
+  
+  .table-header th {
+    font-weight: 600;
+    color: var(--ackermann-brown);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .table tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .table tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.05);
+  }
+  
+  .btn-primary {
+    background-color: var(--ackermann-yellow);
+    border-color: var(--ackermann-yellow);
+    color: var(--ackermann-black);
+  }
+  
+  .btn-primary:hover {
+    background-color: #E6C200;
+    border-color: #E6C200;
+    color: var(--ackermann-black);
+  }
+  
+  .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+  }
+  
+  .text-primary {
+    color: var(--ackermann-brown) !important;
+  }
+  
+  .section-title {
+    position: relative;
+    display: inline-block;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 600;
+    color: var(--ackermann-black);
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--ackermann-yellow);
+  }
+</style>
+{% endblock %}

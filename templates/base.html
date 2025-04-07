@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --ackermann-yellow: #FFD700;
+      --ackermann-brown: #8B4513;
+      --ackermann-light-brown: #A0522D;
+      --ackermann-dark-brown: #5D2906;
+      --ackermann-cream: #FFF8E7;
+      --ackermann-black: #212121;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--ackermann-cream);
+      color: var(--ackermann-black);
+    }
+    
+    h1, h2, h3, h4, h5 {
+      font-family: 'League Spartan', sans-serif;
+      font-weight: 600;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 0.8rem 0;
+      background-color: white !important;
+    }
+    
+    .navbar-brand {
+      font-family: 'League Spartan', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--ackermann-black);
+      letter-spacing: -0.5px;
+    }
+    
+    .logo-icon {
+      color: var(--ackermann-yellow);
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+    
+    .nav-link {
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      color: var(--ackermann-black);
+    }
+    
+    .nav-link:hover {
+      color: var(--ackermann-brown);
+    }
+    
+    .nav-link.active {
+      color: var(--ackermann-brown) !important;
+      font-weight: 600;
+    }
+    
+    .btn-primary {
+      background-color: var(--ackermann-yellow);
+      border-color: var(--ackermann-yellow);
+      color: var(--ackermann-black);
+      box-shadow: 0 2px 4px rgba(139, 69, 19, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: #E6C200;
+      border-color: #E6C200;
+      color: var(--ackermann-black);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+    }
+    
+    .btn-outline-primary {
+      border-color: var(--ackermann-brown);
+      color: var(--ackermann-brown);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--ackermann-brown);
+      border-color: var(--ackermann-brown);
+      color: white;
+    }
+    
+    .card {
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+      background-color: var(--ackermann-brown) !important;
+      color: white !important;
+    }
+    
+    footer {
+      background-color: var(--ackermann-black) !important;
+      color: white;
+      border-top: 3px solid var(--ackermann-yellow);
+    }
+    
+    footer h5, footer h6 {
+      color: var(--ackermann-yellow);
+      font-family: 'League Spartan', sans-serif;
+    }
+    
+    footer .social-icon {
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    footer .social-icon:hover {
+      color: var(--ackermann-yellow);
+      transform: translateY(-3px);
+    }
+    
+    /* Form styles */
+    .form-control, .form-select {
+      border: 1px solid #dee2e6;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.95rem;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--ackermann-yellow);
+      box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+    }
+    
+    .form-label {
+      color: var(--ackermann-brown);
+    }
+    
+    .invalid-feedback {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #dc3545;
+    }
+    
+    .text-primary {
+      color: var(--ackermann-brown) !important;
+    }
+    
+    .bg-primary {
+      background-color: var(--ackermann-brown) !important;
+    }
+    
+    .border-primary {
+      border-color: var(--ackermann-yellow) !important;
+    }
+    
+    .section-title {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-family: 'League Spartan', sans-serif;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background-color: var(--ackermann-yellow);
+    }
+    
+    .alert-success {
+      background-color: rgba(255, 215, 0, 0.2);
+      border-color: var(--ackermann-yellow);
+      color: var(--ackermann-dark-brown);
+    }
+    
+    .footer-logo {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  </style>
+  
+  <title>{% block title %}Ackermann{% endblock %}</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <i class="bi bi-scale logo-icon"></i>
+        ACKERMANN
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+              <i class="bi bi-house-door me-1"></i> Accueil
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+            {% if user.is_staff %}
+              <li class="nav-item">
+                <a class="nav-link {% if 'admin' in request.path %}active{% endif %}" href="{% url 'admin:index' %}">
+                  <i class="bi bi-gear me-1"></i> Admin Django
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'appointment_request_list' in request.path %}active{% endif %}" href="{% url 'appointment_request_list' %}">
+                  <i class="bi bi-calendar-check me-1"></i> Demandes RDV
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'lawyer_list' == request.resolver_match.url_name %}active{% endif %}" href="{% url 'lawyer_list' %}">
+                  <i class="bi bi-people me-1"></i> Avocats
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'case_list' in request.path %}active{% endif %}" href="{% url 'case_list' %}">
+                  <i class="bi bi-folder me-1"></i> Dossiers
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-graph-up me-1"></i> Tableau de Bord
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if 'lawyer_list_client' in request.path %}active{% endif %}" href="{% url 'lawyer_list_client' %}">
+                  <i class="bi bi-calendar-plus me-1"></i> Prendre RDV
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-calendar2-week me-1"></i> Mes RDV
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-calendar2-week me-1"></i> Mes RDV
+                </a>
+              </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="bi bi-person-circle me-1"></i> Mon Profil
+              </a>
+            </li>
+            <li class="nav-item">
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn nav-link" style="border:none; background:none; cursor:pointer;">
+                  <i class="bi bi-box-arrow-right me-1"></i> Se déconnecter
+                </button>
+              </form>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link {% if 'client_registration' in request.path %}active{% endif %}" href="{% url 'client_registration' %}">
+                <i class="bi bi-person-plus me-1"></i> Inscription Client
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if 'login' in request.path %}active{% endif %}" href="{% url 'login' %}">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Connexion
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="mt-5 py-4 text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3 mb-md-0 text-md-start">
+          <h5 class="mb-3 footer-logo"><i class="bi bi-scale me-2" style="color: var(--ackermann-yellow);"></i>ACKERMANN</h5>
+          <p class="text-white-50 small">Expertise juridique et conseils personnalisés depuis 1995.</p>
+        </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+          <h6 class="mb-3">Contact</h6>
+          <p class="text-white-50 small mb-1"><i class="bi bi-geo-alt me-1"></i> 123 Avenue du Droit, 75000 Paris</p>
+          <p class="text-white-50 small mb-1"><i class="bi bi-telephone me-1"></i> +33 1 23 45 67 89</p>
+          <p class="text-white-50 small"><i class="bi bi-envelope me-1"></i> contact@ackermann.fr</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <h6 class="mb-3">Suivez-nous</h6>
+          <div class="d-flex justify-content-center justify-content-md-end">
+            <a href="#" class="text-decoration-none me-3 social-icon"><i class="bi bi-linkedin fs-4"></i></a>
+            <a href="#" class="text-decoration-none me-3 social-icon"><i class="bi bi-twitter-x fs-4"></i></a>
+            <a href="#" class="text-decoration-none social-icon"><i class="bi bi-facebook fs-4"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+      <p class="mb-0 text-white-50 small">&copy; {% now "Y" %} Ackermann. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

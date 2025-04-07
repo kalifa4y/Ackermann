@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Nos Avocats | Ackermann{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h2 class="section-title mb-2">Nos Avocats</h2>
+      <p class="text-muted">Choisissez un avocat pour prendre rendez-vous et bénéficier de conseils juridiques personnalisés.</p>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if lawyers %}
+    <div class="row g-4">
+      {% for lawyer in lawyers %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm h-100 lawyer-card">
+            <div class="card-body p-4">
+              <div class="text-center mb-3">
+                <div class="lawyer-avatar mx-auto mb-3">
+                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; margin: 0 auto;">
+                    <i class="bi bi-person-fill fs-1 text-primary"></i>
+                  </div>
+                </div>
+                <h5 class="card-title fw-bold">{{ lawyer.user.get_full_name|default:lawyer.user.username }}</h5>
+                <div class="specialization-badge mb-3">
+                  <span class="badge bg-light text-dark">
+                    <i class="bi bi-briefcase me-1"></i>
+                    {{ lawyer.specialization|default:"Généraliste" }}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="lawyer-info mb-4">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-envelope me-2 text-primary"></i>
+                  <span>{{ lawyer.user.email }}</span>
+                </div>
+                {% if lawyer.phone_number %}
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-telephone me-2 text-primary"></i>
+                    <span>{{ lawyer.phone_number }}</span>
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="text-center mt-auto">
+                <a href="{% url 'book_appointment' lawyer_id=lawyer.id %}" class="btn btn-primary w-100 py-2">
+                  <i class="bi bi-calendar-plus me-2"></i>Prendre Rendez-vous
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="bi bi-people fs-1 text-muted mb-3"></i>
+      <h5>Aucun avocat disponible</h5>
+      <p class="text-muted">Nos avocats ne sont pas disponibles pour le moment. Veuillez réessayer ultérieurement.</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .section-title {
+    position: relative;
+    display: inline-block;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background-color: var(--ackermann-yellow);
+  }
+  
+  .lawyer-card {
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .lawyer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  }
+  
+  .lawyer-avatar .rounded-circle {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 2px solid var(--ackermann-yellow);
+  }
+  
+  .specialization-badge .badge {
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: 30px;
+    background-color: rgba(139, 69, 19, 0.1) !important;
+    color: var(--ackermann-brown) !important;
+  }
+  
+  .text-primary {
+    color: var(--ackermann-brown) !important;
+  }
+  
+  .btn-primary {
+    background-color: var(--ackermann-yellow);
+    border-color: var(--ackermann-yellow);
+    color: var(--ackermann-black);
+  }
+  
+  .btn-primary:hover {
+    background-color: #E6C200;
+    border-color: #E6C200;
+    color: var(--ackermann-black);
+  }
+</style>
+{% endblock %}

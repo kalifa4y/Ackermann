@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Liste des Avocats | Ackermann{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h2 class="section-title mb-0">Liste des Avocats Actifs</h2>
+      <p class="text-muted mt-3">Gérez les avocats du cabinet Ackermann</p>
+    </div>
+    <div class="col-md-4 text-md-end d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+      <a href="{% url 'add_lawyer' %}" class="btn btn-primary">
+        <i class="bi bi-person-plus me-2"></i>Ajouter un Avocat
+      </a>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      {% if lawyers %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-header">
+              <tr>
+                <th scope="col" class="py-3">Nom</th>
+                <th scope="col" class="py-3">Prénom</th>
+                <th scope="col" class="py-3">Email</th>
+                <th scope="col" class="py-3">Téléphone</th>
+                <th scope="col" class="py-3">Spécialisation</th>
+                <th scope="col" class="py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for lawyer in lawyers %}
+                <tr>
+                  <td class="py-3 fw-medium">{{ lawyer.user.last_name|default:"N/A" }}</td>
+                  <td class="py-3">{{ lawyer.user.first_name|default:"N/A" }}</td>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-envelope me-2 text-primary"></i>
+                      {{ lawyer.user.email|default:"N/A" }}
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-telephone me-2 text-primary"></i>
+                      {{ lawyer.phone_number|default:"N/A" }}
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <span class="badge specialization-badge">
+                      <i class="bi bi-briefcase me-1"></i>
+                      {{ lawyer.specialization|default:"N/A" }}
+                    </span>
+                  </td>
+                  <td class="py-3 text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                      <a href="#" class="btn btn-sm btn-primary">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                      <a href="#" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <a href="#" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-archive"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-5">
+          <i class="bi bi-people fs-1 text-muted mb-3"></i>
+          <h5>Aucun avocat actif</h5>
+          <p class="text-muted mb-4">Commencez par ajouter votre premier avocat</p>
+          <a href="{% url 'add_lawyer' %}" class="btn btn-primary">
+            <i class="bi bi-person-plus me-2"></i>Ajouter un avocat
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-header {
+    background-color: var(--ackermann-cream);
+    border-bottom: 2px solid var(--ackermann-yellow);
+  }
+  
+  .table-header th {
+    font-weight: 600;
+    color: var(--ackermann-brown);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .table tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .table tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.05);
+  }
+  
+  .btn-primary {
+    background-color: var(--ackermann-yellow);
+    border-color: var(--ackermann-yellow);
+    color: var(--ackermann-black);
+  }
+  
+  .btn-primary:hover {
+    background-color: #E6C200;
+    border-color: #E6C200;
+    color: var(--ackermann-black);
+  }
+  
+  .btn-outline-primary {
+    color: var(--ackermann-brown);
+    border-color: var(--ackermann-brown);
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--ackermann-brown);
+    border-color: var(--ackermann-brown);
+    color: white;
+  }
+  
+  .text-primary {
+    color: var(--ackermann-brown) !important;
+  }
+  
+  .section-title {
+    position: relative;
+    display: inline-block;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 600;
+    color: var(--ackermann-black);
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--ackermann-yellow);
+  }
+  
+  .specialization-badge {
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: 30px;
+    background-color: rgba(139, 69, 19, 0.1);
+    color: var(--ackermann-brown);
+  }
+</style>
+{% endblock %}

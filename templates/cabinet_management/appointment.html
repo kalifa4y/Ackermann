@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Prendre Rendez-vous | Ackermann{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header py-3">
+          <h2 class="h4 mb-0 fw-bold text-white">Prendre Rendez-vous</h2>
+        </div>
+        <div class="card-body p-4">
+          <div class="lawyer-info mb-4">
+            <div class="d-flex align-items-center">
+              <div class="lawyer-avatar me-3">
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                  <i class="bi bi-person-fill fs-2 text-primary"></i>
+                </div>
+              </div>
+              <div>
+                <h3 class="h5 mb-1">{{ lawyer.user.get_full_name }}</h3>
+                <p class="mb-0 text-muted">
+                  <i class="bi bi-briefcase-fill me-1"></i> 
+                  <span class="fw-medium">Spécialisation :</span> 
+                  {{ lawyer.specialization|default:"Non spécifiée" }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" novalidate class="needs-validation">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}<p class="mb-0">{{ error }}</p>{% endfor %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+              </div>
+            {% endif %}
+
+            <div class="mb-4">
+              <h5 class="section-title text-primary mb-3 pb-2">Détails du rendez-vous</h5>
+              
+              <div class="mb-3">
+                <label for="{{ form.appointment_datetime.id_for_label }}" class="form-label fw-medium">
+                  <i class="bi bi-calendar-date me-1"></i> {{ form.appointment_datetime.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.appointment_datetime }}
+                {% if form.appointment_datetime.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for error in form.appointment_datetime.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+                <div class="form-text">
+                  <i class="bi bi-info-circle me-1"></i> Sélectionnez une date et une heure entre Lundi et Vendredi, 9h-17h.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="{{ form.notes.id_for_label }}" class="form-label fw-medium">
+                  <i class="bi bi-chat-left-text me-1"></i> {{ form.notes.label }}
+                </label>
+                {{ form.notes }}
+                {% if form.notes.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for error in form.notes.errors %}{{ error }}{% endfor %}
+                  </div>
+                {% endif %}
+                <div class="form-text">Décrivez brièvement l'objet de votre rendez-vous.</div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+              <a href="{% url 'lawyer_list_client' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Retour à la liste
+              </a>
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-calendar-plus me-1"></i> Envoyer la demande
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Styles spécifiques au formulaire de rendez-vous */
+  .form-control, .form-select {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.6rem 0.75rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: var(--ackermann-yellow);
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+  }
+  
+  /* Assurer que les champs de formulaire ont le style Bootstrap */
+  input[type="datetime-local"], 
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  input[type="datetime-local"]:focus, 
+  textarea:focus {
+    border-color: var(--ackermann-yellow);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+  }
+  
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  .section-title {
+    position: relative;
+    display: inline-block;
+    font-family: 'League Spartan', sans-serif;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--ackermann-yellow);
+  }
+  
+  .text-primary {
+    color: var(--ackermann-brown) !important;
+  }
+  
+  .lawyer-avatar .rounded-circle {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  
+  .card-header {
+    background-color: var(--ackermann-brown) !important;
+  }
+  
+  .btn-primary {
+    background-color: var(--ackermann-yellow);
+    border-color: var(--ackermann-yellow);
+    color: var(--ackermann-black);
+  }
+  
+  .btn-primary:hover {
+    background-color: #E6C200;
+    border-color: #E6C200;
+    color: var(--ackermann-black);
+  }
+</style>
+{% endblock %}
