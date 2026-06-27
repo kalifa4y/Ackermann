@@ -26,7 +26,26 @@ Une application pour la gestion d'un cabinet d'avocat en HTML/CSS, Bootstrap et 
 
 Le projet est préparé pour un déploiement Python standard via `requirements.txt` et `runtime.txt`.
 
-> Note : Netlify ne prend pas en charge une application Django complète en mode serveur classique. Le fichier `netlify.toml` est fourni pour déployer les fichiers statiques générés par Django (`collectstatic`). Pour héberger le backend Django réel, il est recommandé d'utiliser une plateforme compatible Python/Django comme Render, Railway, Heroku ou un conteneur Docker.
+### Déploiement recommandé : Render
+
+Render propose un plan gratuit supportant Django/Python et l'hébergement de votre backend.
+
+1. Créez un compte Render.
+2. Connectez votre dépôt GitHub `kalifa4y/Ackermann`.
+3. Créez un nouveau service Web Python en utilisant la branche `main`.
+4. Configurez :
+   - Build command : `pip install -r requirements.txt`
+   - Start command : `gunicorn ackermann.wsgi:application`
+5. Ajoutez les variables d'environnement suivantes dans Render :
+   - `DJANGO_SECRET_KEY` (clé secrète sécurisée)
+   - `DJANGO_DEBUG=False`
+   - `DJANGO_ALLOWED_HOSTS=your-app.onrender.com`
+   - `DJANGO_LOGIN_URL=/comptes/login/`
+   - `DJANGO_LOGIN_REDIRECT_URL=/`
+   - `DJANGO_LOGOUT_REDIRECT_URL=/`
+6. Exécutez `python manage.py migrate` dans l'interface Render ou via une commande de démarrage si nécessaire.
+
+> Note : Render gère bien Django côté serveur, contrairement à Netlify qui est plutôt prévu pour des frontends statiques. Ce dépôt est maintenant configuré pour Render.
 
 ## Configuration d'environnement Recommandée
 
