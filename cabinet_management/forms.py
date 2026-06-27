@@ -6,6 +6,7 @@ import datetime
 # Imports Django
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
@@ -43,6 +44,12 @@ class ClientRegistrationForm(forms.Form):
         if password and password_confirm and password != password_confirm:
             self.add_error('password_confirm', "Les mots de passe ne correspondent pas.")
 
+        if password:
+            try:
+                validate_password(password)
+            except ValidationError as e:
+                self.add_error('password', e)
+
         return cleaned_data
 
 class LawyerAddForm(forms.Form):
@@ -74,6 +81,12 @@ class LawyerAddForm(forms.Form):
 
         if password and password_confirm and password != password_confirm:
             self.add_error('password_confirm', "Les mots de passe initiaux ne correspondent pas.")
+
+        if password:
+            try:
+                validate_password(password)
+            except ValidationError as e:
+                self.add_error('password', e)
 
         return cleaned_data
 
@@ -115,16 +128,21 @@ class AppointmentForm(forms.Form):
 class CaseForm(forms.ModelForm):
     # Champs pour sélectionner Client et Avocat via une liste déroulante
     client = forms.ModelChoiceField(
-        queryset=Client.objects.all().select_related('user'), # Pourrait être filtré davantage si nécessaire
+        queryset=Client.objects.none(),
         label="Client",
         widget=forms.Select(attrs={'class': 'form-select'})
     )
     lawyer = forms.ModelChoiceField(
-        queryset=Lawyer.objects.filter(is_archived=False).select_related('user'), # Ne montre que les avocats actifs
+        queryset=Lawyer.objects.none(),
         label="Avocat Assigné",
-        required=False, # Permet de créer un dossier sans assigner d'avocat immédiatement
+        required=False,
         widget=forms.Select(attrs={'class': 'form-select'})
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['client'].queryset = Client.objects.all().select_related('user')
+        self.fields['lawyer'].queryset = Lawyer.objects.filter(is_archived=False).select_related('user')
 
     class Meta:
         model = Case

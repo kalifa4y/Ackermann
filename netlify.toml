@@ -1,0 +1,10 @@
+[build]
+  command = "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+  publish = "staticfiles"
+
+[context.production.environment]
+  DJANGO_DEBUG = "False"
+  DJANGO_ALLOWED_HOSTS = "example.com"
+  DJANGO_LOGIN_URL = "/comptes/login/"
+  DJANGO_LOGIN_REDIRECT_URL = "/"
+  DJANGO_LOGOUT_REDIRECT_URL = "/"

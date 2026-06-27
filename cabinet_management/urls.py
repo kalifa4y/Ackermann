@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # --- Page d'accueil ---
+    path('', views.home_view, name='home'),
+
     # --- Authentification/Inscription Client ---
     path('inscription/client/', views.client_registration_view, name='client_registration'),
 

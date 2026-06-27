@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil | Ackermann{% endblock %}
+
+{% block content %}
+<div class="py-5 text-center">
+  <h1 class="display-5 fw-bold">Bienvenue sur Ackermann</h1>
+  <p class="lead text-muted">Gérez les clients, avocats, dossiers et rendez-vous depuis une interface simple.</p>
+  <div class="d-flex justify-content-center gap-3 mt-4">
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary btn-lg" href="{% url 'lawyer_list_client' %}">Voir les avocats</a>
+      {% if user.is_staff %}
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'case_list' %}">Gérer les dossiers</a>
+      {% endif %}
+    {% else %}
+      <a class="btn btn-primary btn-lg" href="{% url 'client_registration' %}">Inscription Client</a>
+      <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}">Se connecter</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

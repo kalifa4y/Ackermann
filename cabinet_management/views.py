@@ -28,6 +28,13 @@ def is_client_user(user):
     # hasattr vérifie si la relation inversée 'client_profile' existe
     return user.is_authenticated and not user.is_staff and hasattr(user, 'client_profile')
 
+# --- Vues Générales ---
+
+def home_view(request):
+    """Affiche la page d'accueil du site."""
+    return render(request, 'cabinet_management/home.html')
+
+
 # --- Vues d'Authentification / Inscription ---
 
 def client_registration_view(request):
@@ -51,7 +58,7 @@ def client_registration_view(request):
                 Client.objects.create(user=new_user, phone_number=phone_number)
                 login(request, new_user) # Connecte l'utilisateur
                 messages.success(request, "Inscription réussie ! Vous êtes maintenant connecté.")
-                return redirect('/') # Redirige vers l'accueil (ou dashboard client futur)
+                return redirect('home')
 
             except Exception as e:
                 # Logguer l'erreur ici serait préférable en production
@@ -152,7 +159,7 @@ def book_appointment_view(request, lawyer_id):
         form = AppointmentForm()
 
     context = {'form': form, 'lawyer': lawyer}
-    return render(request, 'cabinet_management/book_appointment.html', context)
+    return render(request, 'cabinet_management/appointment.html', context)
 
 @login_required
 @user_passes_test(is_staff_user)
